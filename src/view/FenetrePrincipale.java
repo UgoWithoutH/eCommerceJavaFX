@@ -4,13 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 import viewmodel.ArticleVM;
+import viewmodel.HabitVM;
 import viewmodel.ManagerVM;
+import viewmodel.ParfumVM;
 
 import java.io.IOException;
 
@@ -19,7 +20,12 @@ public class FenetrePrincipale {
     private ListView<ArticleVM> listViewArticles;
     @FXML
     private ChoiceBox<String> choixFiltre;
-
+    @FXML
+    private TextField nomDetail;
+    @FXML
+    private TextField prixDetail;
+    @FXML
+    private Pane detail;
     private ManagerVM managerVM;
 
     public void initialize(){
@@ -31,16 +37,36 @@ public class FenetrePrincipale {
     private void initializeListViewArticles(){
         listViewArticles.itemsProperty().bind(managerVM.articlesProperty());
         listViewArticles.setCellFactory(__ -> new ArticleCell());
+        listViewArticles.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldV, newV) -> initializeDetail(oldV, newV)
+        );
+    }
+
+    private void initializeDetail(ArticleVM oldArticleVM, ArticleVM newArticleVM) {
+        if(oldArticleVM != null){
+            nomDetail.textProperty().unbindBidirectional(oldArticleVM);
+            prixDetail.textProperty().unbindBidirectional(oldArticleVM);
+        }
+        nomDetail.textProperty().bindBidirectional(newArticleVM.nomProperty());
+        prixDetail.textProperty().bindBidirectional(newArticleVM.prixProperty(), new NumberStringConverter());
+        detail.getChildren().clear();
+        try {
+            if (newArticleVM instanceof ParfumVM parfumVM){
+                detail.getChildren().add(new DetailParfum(parfumVM));
+            }
+            else if(newArticleVM instanceof HabitVM habitVM){
+                detail.getChildren().add(new DetailHabit(habitVM));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void initializeChoiceBoxs(){
         choixFiltre.itemsProperty().bind(managerVM.filtresProperty());
         choixFiltre.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldV, newV) -> {
-                    String choix = choixFiltre.getSelectionModel().getSelectedItem();
-                    if(choix.equals(managerVM.FILTRE_TOUT)){
 
-                    }
                 }
         );
         choixFiltre.getSelectionModel().select(0);

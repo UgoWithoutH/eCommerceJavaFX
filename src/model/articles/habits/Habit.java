@@ -28,4 +28,8 @@ public class Habit extends Article {
     public List<MyColor> getCouleurs() {
         return Collections.unmodifiableList(couleurs);
     }
+
+    public void supprimerTaille(Taille taille){
+
+    }
 }

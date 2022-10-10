@@ -6,7 +6,7 @@
 <HBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="view.FenetrePrincipale"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0" fx:id="root">
     <VBox>
         <ChoiceBox fx:id="choixFiltre"/>
         <ListView fx:id="listViewArticles"/>
@@ -14,10 +14,16 @@
     </VBox>
 
     <VBox>
-        <Label text="nom : "/>
-        <Label fx:id="nomDetail"/>
-        <Label text="prix : "/>
-        <Label fx:id="prixDetail"/>
-    </VBox>
+        <HBox>
+            <Label text="nom : "/>
+            <TextField fx:id="nomDetail"/>
+        </HBox>
+        <HBox>
+            <Label text="prix : "/>
+            <TextField fx:id="prixDetail"/>
+        </HBox>
 
+        <Pane fx:id="detail"/>
+
+    </VBox>
 </HBox>

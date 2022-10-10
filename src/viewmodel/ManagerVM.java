@@ -50,38 +50,33 @@ public class ManagerVM implements PropertyChangeListener {
         return choices;
     }
 
-    private ObservableList<FragranceVM> observableChoicesFragrances = FXCollections.observableArrayList();
-    private ListProperty<FragranceVM> choicesFragrances = new SimpleListProperty<>(observableChoicesFragrances);
+    private ObservableList<String> observableChoicesFragrances = FXCollections.observableArrayList();
+    private ListProperty<String> choicesFragrances = new SimpleListProperty<>(observableChoicesFragrances);
+        public ObservableList<String> getChoicesFragrances() {
+            return FXCollections.unmodifiableObservableList(choicesFragrances.get());
+        }
+        public ReadOnlyListProperty<String> choicesFragrancesProperty() {
+            return choicesFragrances;
+        }
 
-    public ObservableList<FragranceVM> getChoicesFragrances() {
-        return FXCollections.unmodifiableObservableList(choicesFragrances.get());
-    }
-
-    public ReadOnlyListProperty<FragranceVM> choicesFragrancesProperty() {
-        return choicesFragrances;
-    }
-
-    private ObservableList<TailleVM> observableChoicesTailles = FXCollections.observableArrayList();
-    private ListProperty<TailleVM> choicesTailles = new SimpleListProperty<>(observableChoicesTailles);
-
-    public ObservableList<TailleVM> getchoicesTailles() {
-        return FXCollections.unmodifiableObservableList(choicesTailles.get());
-    }
-
-    public ReadOnlyListProperty<TailleVM> choicesTaillesProperty() {
-        return choicesTailles;
-    }
+    private ObservableList<String> observableChoicesTailles = FXCollections.observableArrayList();
+    private ListProperty<String> choicesTailles = new SimpleListProperty<>(observableChoicesTailles);
+        public ObservableList<String> getchoicesTailles() {
+            return FXCollections.unmodifiableObservableList(choicesTailles.get());
+        }
+        public ReadOnlyListProperty<String> choicesTaillesProperty() {
+            return choicesTailles;
+        }
 
     private ObservableList<String> observableFiltres = FXCollections.observableArrayList();
     private ListProperty<String> filtres = new SimpleListProperty<>(observableFiltres);
+        public ObservableList<String> getFiltres() {
+            return FXCollections.unmodifiableObservableList(filtres.get());
+        }
 
-    public ObservableList<String> getFiltres() {
-        return FXCollections.unmodifiableObservableList(filtres.get());
-    }
-
-    public ReadOnlyListProperty<String> filtresProperty() {
-        return filtres;
-    }
+        public ReadOnlyListProperty<String> filtresProperty() {
+            return filtres;
+        }
 
     private Manager model;
 
@@ -97,16 +92,27 @@ public class ManagerVM implements PropertyChangeListener {
                 CHOIX_HABIT,
                 CHOIX_PARFUM
         );
-        observableChoicesFragrances.addAll(Arrays.asList(FragranceVM.values()));
-        observableChoicesTailles.addAll(Arrays.asList(TailleVM.values()));
+
+        List<String> fragrances = new ArrayList<>();
+        for (Fragrance value : Fragrance.values()) {
+            fragrances.add(value.name());
+        }
+
+        observableChoicesFragrances.addAll(fragrances);
+
+        List<String> tailles = new ArrayList<>();
+        for (Taille value : Taille.values()) {
+            tailles.add(value.name());
+        }
+        observableChoicesTailles.addAll(tailles);
     }
 
-    public void ajouterParfum(String nom, double prix, List<FragranceVM> fragrancesChoix) {
+    public void ajouterParfum(String nom, double prix, List<String> fragrancesChoix) {
 
         List<Fragrance> fragrances = new ArrayList<>();
 
-        for (FragranceVM choix : fragrancesChoix) {
-            fragrances.add(Fragrance.valueOf(choix.name()));
+        for (String choix : fragrancesChoix) {
+            fragrances.add(Fragrance.valueOf(choix));
         }
 
         model.ajouterArticle(new Parfum(
@@ -116,7 +122,7 @@ public class ManagerVM implements PropertyChangeListener {
         ));
     }
 
-    public void ajouterHabit(String nom, double prix, List<Color> couleurs, List<TailleVM> taillesVM) {
+    public void ajouterHabit(String nom, double prix, List<Color> couleurs, List<String> taillesChoix) {
         List<MyColor> myColors = new ArrayList<>();
         List<Taille> tailles = new ArrayList<>();
 
@@ -131,8 +137,8 @@ public class ManagerVM implements PropertyChangeListener {
                 )
         );
 
-        taillesVM.forEach(
-                taille -> tailles.add(Taille.valueOf(taille.name()))
+        taillesChoix.forEach(
+                taille -> tailles.add(Taille.valueOf(taille))
         );
 
         model.ajouterArticle(new Habit(
@@ -149,43 +155,9 @@ public class ManagerVM implements PropertyChangeListener {
             IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
             Article article = (Article) ievt.getNewValue();
             if (article instanceof Habit habit) {
-
-                List<Color> colors = new ArrayList<>();
-                List<TailleVM> tailleVM = new ArrayList<>();
-
-                habit.getCouleurs().forEach(
-                        myColor -> new Color(
-                                myColor.getRed(),
-                                myColor.getGreen(),
-                                myColor.getBlue(),
-                                myColor.getOpacity()
-                        )
-                );
-
-                habit.getTailles().forEach(
-                        taille -> tailleVM.add(TailleVM.valueOf(taille.name()))
-                );
-
-                observableArticles.add(ievt.getIndex(), new HabitVM(
-                        habit,
-                        habit.getNom(),
-                        habit.getPrix(),
-                        colors,
-                        tailleVM
-                ));
+                observableArticles.add(ievt.getIndex(), new HabitVM(habit));
             } else if (article instanceof Parfum parfum) {
-
-                List<FragranceVM> fragranceVM = new ArrayList<>();
-                parfum.getFragrances().forEach(
-                        it -> fragranceVM.add(FragranceVM.valueOf(it.name()))
-                );
-
-                observableArticles.add(ievt.getIndex(), new ParfumVM(
-                        parfum,
-                        parfum.getNom(),
-                        parfum.getPrix(),
-                        fragranceVM
-                ));
+                observableArticles.add(ievt.getIndex(), new ParfumVM(parfum));
             }
         }
     }

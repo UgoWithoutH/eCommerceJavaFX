@@ -14,7 +14,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import viewmodel.FragranceVM;
 import viewmodel.ManagerVM;
 
 import java.io.IOException;
@@ -26,13 +25,13 @@ public class CreationParfum extends VBox {
     @FXML
     private TextField prix;
     @FXML
-    private ListView<FragranceVM> listViewFragrancesVM;
+    private ListView<String> listViewFragrancesVM;
     @FXML
-    private ChoiceBox<FragranceVM> choiceBoxFragrancesVM;
-    private ObservableList<FragranceVM> observableFragancesVM = FXCollections.observableArrayList();
-    private ListProperty<FragranceVM> fragrancesVM = new SimpleListProperty<>(observableFragancesVM);
-        public ObservableList<FragranceVM> getFragrancesVM() {return FXCollections.unmodifiableObservableList(fragrancesVM.get());}
-        public ReadOnlyListProperty<FragranceVM> fragrancesVMProperty() {return fragrancesVM;}
+    private ChoiceBox<String> choiceBoxFragrancesVM;
+    private ObservableList<String> observableFragancesVM = FXCollections.observableArrayList();
+    private ListProperty<String> fragrancesVM = new SimpleListProperty<>(observableFragancesVM);
+        public ObservableList<String> getFragrancesVM() {return FXCollections.unmodifiableObservableList(fragrancesVM.get());}
+        public ReadOnlyListProperty<String> fragrancesVMProperty() {return fragrancesVM;}
     private Scene previousScene;
     private Stage stage;
     private ManagerVM managerVM;
@@ -52,7 +51,7 @@ public class CreationParfum extends VBox {
 
     @FXML
     private void ajouterFragrance(ActionEvent actionEvent){
-        FragranceVM fragranceSelected = choiceBoxFragrancesVM.getSelectionModel().getSelectedItem();
+        String fragranceSelected = choiceBoxFragrancesVM.getSelectionModel().getSelectedItem();
 
         if(!observableFragancesVM.contains(fragranceSelected)){
             observableFragancesVM.add(fragranceSelected);

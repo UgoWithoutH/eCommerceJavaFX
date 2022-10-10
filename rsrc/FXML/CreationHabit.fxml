@@ -10,7 +10,6 @@
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="400.0" prefWidth="600.0">
 
-<Label text="habit"/>
     <HBox alignment="CENTER">
         <Label text="nom : "/>
         <TextField fx:id="nom"/>

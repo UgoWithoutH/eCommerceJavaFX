@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import model.articles.Article;
 
 public abstract class ArticleVM {
     private StringProperty nom = new SimpleStringProperty();
@@ -14,9 +15,13 @@ public abstract class ArticleVM {
         public double getPrix() {return prix.get();}
         public DoubleProperty prixProperty() {return prix;}
         public void setPrix(double prix) {this.prix.set(prix);}
+    private Article model;
 
-    public ArticleVM(String nom, double prix) {
-        setNom(nom);
-        setPrix(prix);
+    public ArticleVM(Article model) {
+        this.model = model;
+        setNom(model.getNom());
+        setPrix(model.getPrix());
+        nomProperty().addListener((obs, oldV, newV) -> model.setNom(newV));
+        prixProperty().addListener((obs, oldV, newV) -> model.setPrix(newV.doubleValue()));
     }
 }

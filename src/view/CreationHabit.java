@@ -18,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import viewmodel.ManagerVM;
-import viewmodel.TailleVM;
 
 import java.io.IOException;
 
@@ -30,32 +29,28 @@ public class CreationHabit extends VBox {
     @FXML
     private ListView<Color> listViewCouleurs;
     @FXML
-    private ListView<TailleVM> listViewTailles;
+    private ListView<String> listViewTailles;
     @FXML
-    private ChoiceBox<TailleVM> choiceBoxTaillesVM;
+    private ChoiceBox<String> choiceBoxTaillesVM;
     @FXML
     private ColorPicker colorPicker;
     private ObservableList<Color> observableColors = FXCollections.observableArrayList();
     private ListProperty<Color> colors = new SimpleListProperty<>(observableColors);
+        public ObservableList<Color> getColors() {
+            return FXCollections.unmodifiableObservableList(colors.get());
+        }
+        public ReadOnlyListProperty<Color> colorsProperty() {
+            return colors;
+        }
 
-    public ObservableList<Color> getColors() {
-        return FXCollections.unmodifiableObservableList(colors.get());
-    }
-
-    public ReadOnlyListProperty<Color> colorsProperty() {
-        return colors;
-    }
-
-    private ObservableList<TailleVM> observableTailles = FXCollections.observableArrayList();
-    private ListProperty<TailleVM> tailles = new SimpleListProperty<>(observableTailles);
-
-    public ObservableList<TailleVM> getTailles() {
-        return FXCollections.unmodifiableObservableList(tailles.get());
-    }
-
-    public ReadOnlyListProperty<TailleVM> taillesProperty() {
-        return tailles;
-    }
+    private ObservableList<String> observableTailles = FXCollections.observableArrayList();
+    private ListProperty<String> tailles = new SimpleListProperty<>(observableTailles);
+        public ObservableList<String> getTailles() {
+            return FXCollections.unmodifiableObservableList(tailles.get());
+        }
+        public ReadOnlyListProperty<String> taillesProperty() {
+            return tailles;
+        }
 
     private Scene previousScene;
     private Stage stage;
@@ -93,9 +88,9 @@ public class CreationHabit extends VBox {
 
     @FXML
     private void addTaille(ActionEvent actionEvent) {
-        TailleVM tailleVM = choiceBoxTaillesVM.getSelectionModel().getSelectedItem();
-        if (tailleVM != null && !observableTailles.contains(tailleVM)) {
-            observableTailles.add(tailleVM);
+        String taille = choiceBoxTaillesVM.getSelectionModel().getSelectedItem();
+        if (taille != null && !observableTailles.contains(taille)) {
+            observableTailles.add(taille);
         }
 
     }

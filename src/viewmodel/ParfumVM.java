@@ -11,15 +11,15 @@ import model.articles.parfums.Parfum;
 import java.util.List;
 
 public class ParfumVM extends ArticleVM{
-    private ObservableList<FragranceVM> observableFragrances = FXCollections.observableArrayList();
-    private ListProperty<FragranceVM> fragrances = new SimpleListProperty(observableFragrances);
-        public ObservableList<FragranceVM> getFragrances() {return FXCollections.unmodifiableObservableList(fragrances.get());}
-        public ReadOnlyListProperty<FragranceVM> fragrancesProperty() {return fragrances;}
-    private Parfum model;
+    private ObservableList<String> observableFragrances = FXCollections.observableArrayList();
+    private ListProperty<String> fragrances = new SimpleListProperty(observableFragrances);
+        public ObservableList<String> getFragrances() {return FXCollections.unmodifiableObservableList(fragrances.get());}
+        public ReadOnlyListProperty<String> fragrancesProperty() {return fragrances;}
 
-    public ParfumVM(Parfum model, String nom, double prix, List<FragranceVM> fragrances) {
-        super(nom, prix);
-        this.model = model;
-        observableFragrances.addAll(fragrances);
+    public ParfumVM(Parfum model) {
+        super(model);
+        model.getFragrances().forEach(
+                it -> observableFragrances.add(it.name())
+        );
     }
 }

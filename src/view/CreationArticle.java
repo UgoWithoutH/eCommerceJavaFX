@@ -57,7 +57,7 @@ public class CreationArticle {
             creationParfum.setStage(stage);
             creation.getChildren().add(creationParfum);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
@@ -69,7 +69,7 @@ public class CreationArticle {
             creationHabit.setStage(stage);
             creation.getChildren().add(creationHabit);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
