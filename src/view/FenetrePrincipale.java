@@ -44,18 +44,18 @@ public class FenetrePrincipale {
 
     private void initializeDetail(ArticleVM oldArticleVM, ArticleVM newArticleVM) {
         if(oldArticleVM != null){
-            nomDetail.textProperty().unbindBidirectional(oldArticleVM);
-            prixDetail.textProperty().unbindBidirectional(oldArticleVM);
+            nomDetail.textProperty().unbindBidirectional(oldArticleVM.nomProperty());
+            prixDetail.textProperty().unbindBidirectional(oldArticleVM.prixProperty());
         }
         nomDetail.textProperty().bindBidirectional(newArticleVM.nomProperty());
         prixDetail.textProperty().bindBidirectional(newArticleVM.prixProperty(), new NumberStringConverter());
         detail.getChildren().clear();
         try {
             if (newArticleVM instanceof ParfumVM parfumVM){
-                detail.getChildren().add(new DetailParfum(parfumVM));
+                detail.getChildren().add(new DetailParfum(parfumVM, managerVM));
             }
             else if(newArticleVM instanceof HabitVM habitVM){
-                detail.getChildren().add(new DetailHabit(habitVM));
+                detail.getChildren().add(new DetailHabit(habitVM, managerVM));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

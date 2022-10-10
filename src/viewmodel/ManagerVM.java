@@ -1,5 +1,6 @@
 package viewmodel;
 
+import data.Stub;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -83,6 +84,9 @@ public class ManagerVM implements PropertyChangeListener {
     public ManagerVM() {
         this.model = new Manager();
         model.ajouterPropertyChangeListener(this);
+        new Stub().creer().forEach(
+                it -> model.ajouterArticle(it)
+        );
         observableFiltres.addAll(
                 FILTRE_TOUT,
                 FILTRE_HABIT,
@@ -97,7 +101,6 @@ public class ManagerVM implements PropertyChangeListener {
         for (Fragrance value : Fragrance.values()) {
             fragrances.add(value.name());
         }
-
         observableChoicesFragrances.addAll(fragrances);
 
         List<String> tailles = new ArrayList<>();

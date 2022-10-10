@@ -6,8 +6,8 @@ import java.beans.PropertyChangeSupport;
 public abstract class Article {
 
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
-    private static final String PROP_NOM = "NOM";
-    private static final String PROP_PRIX = "PRIX";
+    public static final String PROP_NOM = "NOM";
+    public static final String PROP_PRIX = "PRIX";
 
     public Article(String nom, double prix) {
         this.nom = nom;

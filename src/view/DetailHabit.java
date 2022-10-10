@@ -6,6 +6,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import viewmodel.HabitVM;
+import viewmodel.ManagerVM;
 
 import java.io.IOException;
 
@@ -16,9 +17,11 @@ public class DetailHabit extends VBox {
     @FXML
     private ListView<Color> couleurs;
     private HabitVM habitVM;
+    private ManagerVM managerVM;
 
-    public DetailHabit(HabitVM habitVM) throws IOException {
+    public DetailHabit(HabitVM habitVM, ManagerVM managerVM) throws IOException {
         this.habitVM = habitVM;
+        this.managerVM = managerVM;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DetailHabit.fxml"));
         loader.setController(this);
         loader.setRoot(this);

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Parfum extends Article {
-    private static final String PROP_FRAGRANCES = "FRAGRANCES";
+    public static final String PROP_FRAGRANCES = "FRAGRANCES";
     private List<Fragrance> fragrances = new ArrayList<>();
 
     public Parfum(String nom, double prix, List<Fragrance> fragrances) {
@@ -31,8 +31,8 @@ public class Parfum extends Article {
     }
 
     public void supprimerFragrance(Fragrance fragrance){
-        fragrances.remove(fragrance);
         int index = fragrances.indexOf(fragrance);
+        fragrances.remove(fragrance);
         support.fireIndexedPropertyChange(PROP_FRAGRANCES, index, fragrance, null);
     }
 }
