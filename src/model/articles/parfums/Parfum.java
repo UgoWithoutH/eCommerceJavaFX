@@ -8,7 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Parfum extends Article {
-    public static final String PROP_FRAGRANCES = "FRAGRANCES";
+    public static final String PROP_FRAGRANCES_AJOUT = "PROP_FRAGRANCES_AJOUT";
+    public static final String PROP_FRAGRANCES_SUPPR = "PROP_FRAGRANCES_SUPPR";
     private List<Fragrance> fragrances = new ArrayList<>();
 
     public Parfum(String nom, double prix, List<Fragrance> fragrances) {
@@ -26,13 +27,12 @@ public class Parfum extends Article {
         if(!fragrances.contains(fragrance)){
             fragrances.add(fragrance);
             int index = fragrances.indexOf(fragrance);
-            support.fireIndexedPropertyChange(PROP_FRAGRANCES, index, fragrances.size() > 1 ? fragrances.get(index - 1) : null, fragrance);
+            support.fireIndexedPropertyChange(PROP_FRAGRANCES_AJOUT, index, fragrances.size() > 1 ? fragrances.get(index - 1) : null, fragrance);
         }
     }
 
     public void supprimerFragrance(Fragrance fragrance){
-        int index = fragrances.indexOf(fragrance);
         fragrances.remove(fragrance);
-        support.fireIndexedPropertyChange(PROP_FRAGRANCES, index, fragrance, null);
+        support.firePropertyChange(PROP_FRAGRANCES_SUPPR, fragrance, null);
     }
 }

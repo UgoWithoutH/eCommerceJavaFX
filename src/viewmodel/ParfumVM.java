@@ -45,13 +45,20 @@ public class ParfumVM extends ArticleVM{
             setPrix((double) evt.getNewValue());
         }
 
-        if(evt.getPropertyName().equals(Parfum.PROP_FRAGRANCES)){
+        if(evt.getPropertyName().equals(Parfum.PROP_FRAGRANCES_AJOUT)){
             IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
             Object newValue = ievt.getNewValue();
             if(newValue != null) {
                 observableFragrances.add(ievt.getIndex(),((Fragrance) newValue).name());
             }else{
                 observableFragrances.remove(ievt.getIndex());
+            }
+        }
+
+        if(evt.getPropertyName().equals(Parfum.PROP_FRAGRANCES_SUPPR)){
+            String fragrance = ((Fragrance) evt.getOldValue()).name();
+            if(fragrance != null){
+                observableFragrances.remove(fragrance);
             }
         }
     }

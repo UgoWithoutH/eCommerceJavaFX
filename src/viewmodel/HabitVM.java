@@ -15,15 +15,28 @@ import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-public class HabitVM extends ArticleVM{
+public class HabitVM extends ArticleVM {
     private ObservableList<String> observableTailles = FXCollections.observableArrayList();
     private ListProperty<String> tailles = new SimpleListProperty<>(observableTailles);
-        public ObservableList<String> getTailles() {return FXCollections.unmodifiableObservableList(tailles.get());}
-        public ReadOnlyListProperty<String> taillesProperty() {return tailles;}
+
+    public ObservableList<String> getTailles() {
+        return FXCollections.unmodifiableObservableList(tailles.get());
+    }
+
+    public ReadOnlyListProperty<String> taillesProperty() {
+        return tailles;
+    }
+
     private ObservableList<Color> observableColors = FXCollections.observableArrayList();
     private ListProperty<Color> colors = new SimpleListProperty(observableColors);
-        public ObservableList<Color> getColors() {return FXCollections.unmodifiableObservableList(colors.get());}
-        public ReadOnlyListProperty<Color> colorsProperty() {return colors;}
+
+    public ObservableList<Color> getColors() {
+        return FXCollections.unmodifiableObservableList(colors.get());
+    }
+
+    public ReadOnlyListProperty<Color> colorsProperty() {
+        return colors;
+    }
 
     public HabitVM(Habit model) {
         super(model);
@@ -50,37 +63,51 @@ public class HabitVM extends ArticleVM{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals(Habit.PROP_NOM)){
+        if (evt.getPropertyName().equals(Habit.PROP_NOM)) {
             setNom((String) evt.getNewValue());
         }
 
-        if(evt.getPropertyName().equals(Habit.PROP_PRIX)){
+        if (evt.getPropertyName().equals(Habit.PROP_PRIX)) {
             setPrix((double) evt.getNewValue());
         }
 
-        if(evt.getPropertyName().equals(Habit.PROP_TAILLE)){
+        if (evt.getPropertyName().equals(Habit.PROP_TAILLE_AJOUT)) {
             IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
-            Object newValue = ievt.getNewValue();
-            if(newValue != null) {
-                observableTailles.add(ievt.getIndex(),((Taille) newValue).name());
-            }else{
-                observableTailles.remove(ievt.getIndex());
+            String newValue = ((Taille) ievt.getNewValue()).name();
+            if (newValue != null) {
+                observableTailles.add(ievt.getIndex(), newValue);
             }
         }
 
-        if(evt.getPropertyName().equals(Habit.PROP_PRIX)){
+        if (evt.getPropertyName().equals(Habit.PROP_TAILLE_SUPPR)) {
+            String taille = ((Taille) evt.getOldValue()).name();
+            if (taille != null) {
+                observableTailles.remove(taille);
+            }
+        }
+
+        if (evt.getPropertyName().equals(Habit.PROP_COULEUR_AJOUT)) {
             IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
-            Object newValue = ievt.getNewValue();
-            if(newValue != null) {
-                MyColor color = (MyColor) ievt.getNewValue();
+            MyColor newValue = (MyColor) ievt.getNewValue();
+            if (newValue != null) {
                 observableColors.add(ievt.getIndex(), new Color(
+                        newValue.getRed(),
+                        newValue.getGreen(),
+                        newValue.getBlue(),
+                        newValue.getOpacity()
+                ));
+            }
+        }
+
+        if (evt.getPropertyName().equals(Habit.PROP_COULEUR_SUPPR)) {
+            MyColor color = (MyColor) evt.getOldValue();
+            if (color != null) {
+                observableColors.remove(new Color(
                         color.getRed(),
                         color.getGreen(),
                         color.getBlue(),
                         color.getOpacity()
                 ));
-            }else{
-                observableColors.remove(ievt.getIndex());
             }
         }
     }

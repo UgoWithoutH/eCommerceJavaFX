@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import model.articles.Article;
 
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 public abstract class ArticleVM implements PropertyChangeListener {
     private StringProperty nom = new SimpleStringProperty();
@@ -26,5 +27,18 @@ public abstract class ArticleVM implements PropertyChangeListener {
         nomProperty().addListener((obs, oldV, newV) -> model.setNom(newV));
         prixProperty().addListener((obs, oldV, newV) -> model.setPrix(newV.doubleValue()));
         model.ajouterPropertyChangeListener(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArticleVM articleVM = (ArticleVM) o;
+        return nom.equals(articleVM.nom) && model.equals(articleVM.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom, model);
     }
 }

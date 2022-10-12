@@ -154,13 +154,21 @@ public class ManagerVM implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(Manager.PROP_ARTICLES)) {
+        if (evt.getPropertyName().equals(Manager.PROP_ARTICLES_AJOUT)) {
             IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
             Article article = (Article) ievt.getNewValue();
             if (article instanceof Habit habit) {
                 observableArticles.add(ievt.getIndex(), new HabitVM(habit));
             } else if (article instanceof Parfum parfum) {
                 observableArticles.add(ievt.getIndex(), new ParfumVM(parfum));
+            }
+        }
+        else if(evt.getPropertyName().equals(Manager.PROP_ARTICLES_SUPPR)){
+            Article article = (Article) evt.getOldValue();
+            if (article instanceof Habit habit) {
+                observableArticles.remove(new HabitVM(habit));
+            } else if (article instanceof Parfum parfum) {
+                observableArticles.remove(new ParfumVM(parfum));
             }
         }
     }
