@@ -3,9 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import java.lang.Integer?>
 <HBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0" fx:id="root">
+      xmlns:fx="http://javafx.com/fxml"
+      prefHeight="400.0" prefWidth="600.0" fx:id="root">
+    <fx:define>
+        <Integer fx:value="-1" fx:id="myInteger"/>
+    </fx:define>
     <VBox>
         <ChoiceBox fx:id="choixFiltre"/>
         <ListView fx:id="listViewArticles"/>
@@ -13,7 +17,7 @@
         <Button text="supprimer" onAction="#supprimer"/>
     </VBox>
 
-    <VBox>
+    <VBox visible="${listViewArticles.selectionModel.selectedIndex != myInteger}">
         <HBox>
             <Label text="nom : "/>
             <TextField fx:id="nomDetail"/>
@@ -24,6 +28,5 @@
         </HBox>
 
         <Pane fx:id="detail"/>
-
     </VBox>
 </HBox>

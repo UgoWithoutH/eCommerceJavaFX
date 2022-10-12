@@ -1,9 +1,7 @@
 package viewmodel;
 
 import data.*;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
@@ -32,53 +30,39 @@ public class ManagerVM implements PropertyChangeListener {
     public final String FILTRE_TOUT = "TOUT";
     private ObservableList<ArticleVM> observableArticles = FXCollections.observableArrayList();
     private ListProperty<ArticleVM> articles = new SimpleListProperty<>(observableArticles);
-
-    public ObservableList<ArticleVM> getArticles() {
-        return FXCollections.unmodifiableObservableList(articles.get());
-    }
-
-    public ReadOnlyListProperty<ArticleVM> articlesProperty() {
-        return articles;
-    }
-
+        public ObservableList<ArticleVM> getArticles() {return FXCollections.unmodifiableObservableList(articles.get());}
+        public ReadOnlyListProperty<ArticleVM> articlesProperty() {
+            return articles;
+        }
     private ObservableList<String> observableChoices = FXCollections.observableArrayList();
     private ListProperty<String> choices = new SimpleListProperty<>(observableChoices);
-
-    public ObservableList<String> getChoices() {
-        return FXCollections.unmodifiableObservableList(choices.get());
-    }
-
-    public ReadOnlyListProperty<String> choicesProperty() {
-        return choices;
-    }
-
+        public ObservableList<String> getChoices() {
+            return FXCollections.unmodifiableObservableList(choices.get());
+        }
+        public ReadOnlyListProperty<String> choicesProperty() {
+            return choices;
+        }
     private ObservableList<String> observableChoicesFragrances = FXCollections.observableArrayList();
     private ListProperty<String> choicesFragrances = new SimpleListProperty<>(observableChoicesFragrances);
-        public ObservableList<String> getChoicesFragrances() {
-            return FXCollections.unmodifiableObservableList(choicesFragrances.get());
-        }
+        public ObservableList<String> getChoicesFragrances() {return FXCollections.unmodifiableObservableList(choicesFragrances.get());}
         public ReadOnlyListProperty<String> choicesFragrancesProperty() {
             return choicesFragrances;
         }
-
     private ObservableList<String> observableChoicesTailles = FXCollections.observableArrayList();
     private ListProperty<String> choicesTailles = new SimpleListProperty<>(observableChoicesTailles);
-        public ObservableList<String> getchoicesTailles() {
-            return FXCollections.unmodifiableObservableList(choicesTailles.get());
-        }
+        public ObservableList<String> getchoicesTailles() {return FXCollections.unmodifiableObservableList(choicesTailles.get());}
         public ReadOnlyListProperty<String> choicesTaillesProperty() {
             return choicesTailles;
         }
-
     private ObservableList<String> observableFiltres = FXCollections.observableArrayList();
     private ListProperty<String> filtres = new SimpleListProperty<>(observableFiltres);
         public ObservableList<String> getFiltres() {
             return FXCollections.unmodifiableObservableList(filtres.get());
         }
-
         public ReadOnlyListProperty<String> filtresProperty() {
             return filtres;
         }
+    private String filterSelected;
 
     private Saver saver = new FileSaver();
     private Loader loader = new FileLoader();
@@ -94,10 +78,9 @@ public class ManagerVM implements PropertyChangeListener {
         model.getArticles().forEach(
                 it ->
                 {
-                    if(it instanceof Habit habit){
+                    if (it instanceof Habit habit) {
                         observableArticles.add(new HabitVM(habit));
-                    }
-                    else if(it instanceof Parfum parfum){
+                    } else if (it instanceof Parfum parfum) {
                         observableArticles.add(new ParfumVM(parfum));
                     }
                 }
@@ -123,6 +106,54 @@ public class ManagerVM implements PropertyChangeListener {
             tailles.add(value.name());
         }
         observableChoicesTailles.addAll(tailles);
+    }
+
+    public void setFilterSelected(String filterSelected) {
+        this.filterSelected = filterSelected;
+    }
+
+    public void filtrer(String choix) {
+        List<ArticleVM> articleVMS = new ArrayList<>();
+        switch (choix) {
+            case FILTRE_TOUT -> filtreTout(articleVMS);
+            case FILTRE_HABIT -> filtreHabits(articleVMS);
+            case FILTRE_PARFUM -> filtreParfums(articleVMS);
+        }
+
+        observableArticles.clear();
+        observableArticles.addAll(articleVMS);
+    }
+
+    private void filtreTout(List<ArticleVM> articleVMS) {
+        model.getArticles().forEach(
+                it -> {
+                    if (it instanceof Habit habit) {
+                        articleVMS.add(new HabitVM(habit));
+                    } else if (it instanceof Parfum parfum) {
+                        articleVMS.add(new ParfumVM(parfum));
+                    }
+                }
+        );
+    }
+
+    private void filtreHabits(List<ArticleVM> articleVMS) {
+        model.getArticles().forEach(
+                it -> {
+                    if (it instanceof Habit habit) {
+                        articleVMS.add(new HabitVM(habit));
+                    }
+                }
+        );
+    }
+
+    private void filtreParfums(List<ArticleVM> articleVMS) {
+        model.getArticles().forEach(
+                it -> {
+                    if (it instanceof Parfum parfum) {
+                        articleVMS.add(new ParfumVM(parfum));
+                    }
+                }
+        );
     }
 
     public void ajouterParfum(String nom, double prix, List<String> fragrancesChoix) {
@@ -167,8 +198,8 @@ public class ManagerVM implements PropertyChangeListener {
         ));
     }
 
-    public void supprimerArticle(ArticleVM articleVM){
-        if(articleVM instanceof HabitVM habitVM){
+    public void supprimerArticle(ArticleVM articleVM) {
+        if (articleVM instanceof HabitVM habitVM) {
             List<MyColor> colors = new ArrayList<>();
             habitVM.getColors().forEach(
                     it -> colors.add(
@@ -190,8 +221,7 @@ public class ManagerVM implements PropertyChangeListener {
                     colors,
                     tailles
             ));
-        }
-        else if(articleVM instanceof ParfumVM parfumVM){
+        } else if (articleVM instanceof ParfumVM parfumVM) {
             List<Fragrance> fragrances = new ArrayList<>();
             parfumVM.getFragrances().forEach(
                     it -> fragrances.add(Fragrance.valueOf(it))
@@ -207,22 +237,24 @@ public class ManagerVM implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(Manager.PROP_ARTICLES_AJOUT)) {
-            IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
-            Article article = (Article) ievt.getNewValue();
-            if (article instanceof Habit habit) {
-                observableArticles.add(ievt.getIndex(), new HabitVM(habit));
-            } else if (article instanceof Parfum parfum) {
-                observableArticles.add(ievt.getIndex(), new ParfumVM(parfum));
+            Article article = (Article) evt.getNewValue();
+            if (article instanceof Habit habit && filterIsActivated(FILTRE_HABIT)) {
+                observableArticles.add(new HabitVM(habit));
+            } else if (article instanceof Parfum parfum && filterIsActivated(FILTRE_PARFUM)) {
+                observableArticles.add(new ParfumVM(parfum));
             }
-        }
-        else if(evt.getPropertyName().equals(Manager.PROP_ARTICLES_SUPPR)){
+        } else if (evt.getPropertyName().equals(Manager.PROP_ARTICLES_SUPPR)) {
             Article article = (Article) evt.getOldValue();
-            if (article instanceof Habit habit) {
+            if (article instanceof Habit habit && filterIsActivated(FILTRE_HABIT)) {
                 observableArticles.remove(new HabitVM(habit));
-            } else if (article instanceof Parfum parfum) {
+            } else if (article instanceof Parfum parfum && filterIsActivated(FILTRE_PARFUM)) {
                 observableArticles.remove(new ParfumVM(parfum));
             }
         }
+    }
+
+    private boolean filterIsActivated(String filterDesired){
+        return filterDesired.equals(filterSelected);
     }
 
     public void save() throws IOException {

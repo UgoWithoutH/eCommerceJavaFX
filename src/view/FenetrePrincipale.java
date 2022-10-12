@@ -51,9 +51,14 @@ public class FenetrePrincipale {
         if(oldArticleVM != null){
             nomDetail.textProperty().unbindBidirectional(oldArticleVM.nomProperty());
             prixDetail.textProperty().unbindBidirectional(oldArticleVM.prixProperty());
+            nomDetail.setText("");
+            prixDetail.setText("");
         }
-        nomDetail.textProperty().bindBidirectional(newArticleVM.nomProperty());
-        prixDetail.textProperty().bindBidirectional(newArticleVM.prixProperty(), new NumberStringConverter());
+        if(newArticleVM != null) {
+            nomDetail.textProperty().bindBidirectional(newArticleVM.nomProperty());
+            prixDetail.textProperty().bindBidirectional(newArticleVM.prixProperty(), new NumberStringConverter());
+        }
+
         detail.getChildren().clear();
         try {
             if (newArticleVM instanceof ParfumVM parfumVM){
@@ -79,7 +84,8 @@ public class FenetrePrincipale {
         choixFiltre.itemsProperty().bind(managerVM.filtresProperty());
         choixFiltre.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldV, newV) -> {
-
+                    managerVM.filtrer(newV);
+                    managerVM.setFilterSelected(newV);
                 }
         );
         choixFiltre.getSelectionModel().select(0);

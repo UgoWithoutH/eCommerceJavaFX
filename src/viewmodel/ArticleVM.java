@@ -34,11 +34,11 @@ public abstract class ArticleVM implements PropertyChangeListener {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleVM articleVM = (ArticleVM) o;
-        return nom.equals(articleVM.nom);
+        return nom.get().equals(articleVM.nom.get());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nom, model);
+        return Objects.hash(nom.get());
     }
 }

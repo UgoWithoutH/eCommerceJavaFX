@@ -3,6 +3,7 @@ package model.articles;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Objects;
 
 public abstract class Article implements Serializable {
 
@@ -47,5 +48,18 @@ public abstract class Article implements Serializable {
             support = new PropertyChangeSupport(this);
         }
         return support;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return nom.equals(article.nom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom);
     }
 }
