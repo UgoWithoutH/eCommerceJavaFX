@@ -31,7 +31,7 @@ public class CreationHabit extends VBox {
     @FXML
     private ListView<String> listViewTailles;
     @FXML
-    private ChoiceBox<String> choiceBoxTaillesVM;
+    private ChoiceBox<String> choiceBoxTailles;
     @FXML
     private ColorPicker colorPicker;
     private ObservableList<Color> observableColors = FXCollections.observableArrayList();
@@ -67,7 +67,7 @@ public class CreationHabit extends VBox {
     public void initialize() {
         listViewCouleurs.itemsProperty().bind(colorsProperty());
         listViewTailles.itemsProperty().bind(taillesProperty());
-        choiceBoxTaillesVM.itemsProperty().bind(managerVM.choicesTaillesProperty());
+        choiceBoxTailles.itemsProperty().bind(managerVM.choicesTaillesProperty());
     }
 
     public void setPreviousScene(Scene scene) {
@@ -88,7 +88,7 @@ public class CreationHabit extends VBox {
 
     @FXML
     private void addTaille(ActionEvent actionEvent) {
-        String taille = choiceBoxTaillesVM.getSelectionModel().getSelectedItem();
+        String taille = choiceBoxTailles.getSelectionModel().getSelectedItem();
         if (taille != null && !observableTailles.contains(taille)) {
             observableTailles.add(taille);
         }

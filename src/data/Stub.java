@@ -1,5 +1,6 @@
 package data;
 
+import model.Manager;
 import model.articles.Article;
 import model.articles.habits.Habit;
 import model.articles.habits.MyColor;
@@ -10,29 +11,27 @@ import model.articles.parfums.Parfum;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stub {
+public class Stub implements Loader{
 
 
-    public List<Article> creer() {
-        return new ArrayList<>() {{
-            add(new Habit(
-                    "tee shirt",
-                    12,
-                    new ArrayList<>() {{
-                        add(new MyColor(0.144, 0.214, 0.455, 1));
-                        add(new MyColor(0.144, 0.244, 0.455, 1));
-                    }},
-                    new ArrayList<>() {{
-                        add(Taille.S);
-                    }}
-            ));
-            add(new Parfum(
-                    "dior",
-                    100,
-                    new ArrayList<>(){{
-                        add(Fragrance.PRALINE);
-                    }}
-            ));
-        }};
+    public Manager load() {
+
+        Manager manager = new Manager();
+        manager.ajouterArticle(new Habit(
+                "tee shirt",
+                12,
+                new ArrayList<>(),
+                new ArrayList<>() {{
+                    add(Taille.S);
+                }}
+        ));
+        manager.ajouterArticle(new Parfum(
+                "dior",
+                100,
+                new ArrayList<>(){{
+                    add(Fragrance.PRALINE);
+                }}
+        ));
+        return manager;
     }
 }

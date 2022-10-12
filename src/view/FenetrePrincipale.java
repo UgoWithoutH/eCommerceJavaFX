@@ -26,10 +26,15 @@ public class FenetrePrincipale {
     private TextField prixDetail;
     @FXML
     private Pane detail;
+    private DetailHabit detailHabit;
+    private DetailParfum detailParfum;
     private ManagerVM managerVM;
 
+    public FenetrePrincipale(ManagerVM managerVM) {
+        this.managerVM = managerVM;
+    }
+
     public void initialize(){
-        managerVM = new ManagerVM();
         initializeListViewArticles();
         initializeChoiceBoxs();
     }
@@ -52,10 +57,18 @@ public class FenetrePrincipale {
         detail.getChildren().clear();
         try {
             if (newArticleVM instanceof ParfumVM parfumVM){
-                detail.getChildren().add(new DetailParfum(parfumVM, managerVM));
+                if(detailParfum == null){
+                    detailParfum = new DetailParfum(managerVM);
+                }
+                detailParfum.setParfumVM(parfumVM);
+                detail.getChildren().add(detailParfum);
             }
             else if(newArticleVM instanceof HabitVM habitVM){
-                detail.getChildren().add(new DetailHabit(habitVM, managerVM));
+                if(detailHabit == null){
+                    detailHabit = new DetailHabit(managerVM);
+                }
+                detailHabit.setHabitVM(habitVM);
+                detail.getChildren().add(detailHabit);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,5 +93,13 @@ public class FenetrePrincipale {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/CreationArticle.fxml"));
         loader.setController(creationArticle);
         stage.setScene(new Scene(loader.load()));
+    }
+
+    @FXML
+    private void supprimer(ActionEvent actionEvent){
+        ArticleVM articleVM = listViewArticles.getSelectionModel().getSelectedItem();
+        if(articleVM != null){
+            managerVM.supprimerArticle(articleVM);
+        }
     }
 }

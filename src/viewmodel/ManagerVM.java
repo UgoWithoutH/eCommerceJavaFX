@@ -1,6 +1,6 @@
 package viewmodel;
 
-import data.Stub;
+import data.*;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -18,6 +18,7 @@ import model.articles.parfums.Parfum;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,13 +80,27 @@ public class ManagerVM implements PropertyChangeListener {
             return filtres;
         }
 
+    private Saver saver = new FileSaver();
+    private Loader loader = new FileLoader();
     private Manager model;
 
     public ManagerVM() {
-        this.model = new Manager();
+        try {
+            model = loader.load();
+        } catch (IOException | ClassNotFoundException e) {
+            model = new Stub().load();
+        }
         model.ajouterPropertyChangeListener(this);
-        new Stub().creer().forEach(
-                it -> model.ajouterArticle(it)
+        model.getArticles().forEach(
+                it ->
+                {
+                    if(it instanceof Habit habit){
+                        observableArticles.add(new HabitVM(habit));
+                    }
+                    else if(it instanceof Parfum parfum){
+                        observableArticles.add(new ParfumVM(parfum));
+                    }
+                }
         );
         observableFiltres.addAll(
                 FILTRE_TOUT,
@@ -152,6 +167,43 @@ public class ManagerVM implements PropertyChangeListener {
         ));
     }
 
+    public void supprimerArticle(ArticleVM articleVM){
+        if(articleVM instanceof HabitVM habitVM){
+            List<MyColor> colors = new ArrayList<>();
+            habitVM.getColors().forEach(
+                    it -> colors.add(
+                            new MyColor(
+                                    it.getRed(),
+                                    it.getGreen(),
+                                    it.getBlue(),
+                                    it.getOpacity()
+                            )
+                    )
+            );
+            List<Taille> tailles = new ArrayList<>();
+            habitVM.getTailles().forEach(
+                    it -> tailles.add(Taille.valueOf(it))
+            );
+            model.supprimerArticle(new Habit(
+                    habitVM.getNom(),
+                    habitVM.getPrix(),
+                    colors,
+                    tailles
+            ));
+        }
+        else if(articleVM instanceof ParfumVM parfumVM){
+            List<Fragrance> fragrances = new ArrayList<>();
+            parfumVM.getFragrances().forEach(
+                    it -> fragrances.add(Fragrance.valueOf(it))
+            );
+            model.supprimerArticle(new Parfum(
+                    parfumVM.getNom(),
+                    parfumVM.getPrix(),
+                    fragrances
+            ));
+        }
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(Manager.PROP_ARTICLES_AJOUT)) {
@@ -171,5 +223,9 @@ public class ManagerVM implements PropertyChangeListener {
                 observableArticles.remove(new ParfumVM(parfum));
             }
         }
+    }
+
+    public void save() throws IOException {
+        saver.save(model);
     }
 }

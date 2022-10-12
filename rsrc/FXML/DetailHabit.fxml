@@ -10,8 +10,22 @@
             xmlns:fx="http://javafx.com/fxml">
 
     <HBox>
-        <ListView fx:id="tailles"/>
-        <ListView fx:id="couleurs"/>
+        <VBox>
+            <ListView fx:id="tailles"/>
+            <HBox>
+                <ChoiceBox fx:id="choiceTaille"/>
+                <Button text="ajouter" onAction="#ajouterTaille"/>
+                <Button text="supprimer" onAction="#supprimerTaille"/>
+            </HBox>
+        </VBox>
+        <VBox>
+            <ListView fx:id="couleurs"/>
+            <HBox>
+                <ColorPicker fx:id="colorPicker"/>
+                <Button text="ajouter" onAction="#ajouterCouleur"/>
+                <Button text="supprimer" onAction="#supprimerCouleur"/>
+            </HBox>
+        </VBox>
     </HBox>
 
 </fx:root>

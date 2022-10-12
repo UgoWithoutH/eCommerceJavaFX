@@ -34,7 +34,7 @@ public abstract class ArticleVM implements PropertyChangeListener {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleVM articleVM = (ArticleVM) o;
-        return nom.equals(articleVM.nom) && model.equals(articleVM.model);
+        return nom.equals(articleVM.nom);
     }
 
     @Override

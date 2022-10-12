@@ -26,7 +26,7 @@
         </VBox>
         <VBox>
             <ListView fx:id="listViewTailles"/>
-            <ChoiceBox fx:id="choiceBoxTaillesVM"/>
+            <ChoiceBox fx:id="choiceBoxTailles"/>
             <Button text="ajouter" onAction="#addTaille"/>
         </VBox>
     </HBox>

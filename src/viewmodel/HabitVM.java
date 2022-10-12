@@ -61,6 +61,33 @@ public class HabitVM extends ArticleVM {
         );
     }
 
+    public void ajouterTaille(String choix){
+        ((Habit) model).ajouterTaille(Taille.valueOf(choix));
+    }
+
+    public void supprimerTaille(String choix){
+        ((Habit) model).supprimerTaille(Taille.valueOf(choix));
+    }
+
+    public void ajouterCouleur(Color color){
+        ((Habit) model).ajouterCouleur(new MyColor(
+                color.getRed(),
+                color.getGreen(),
+                color.getBlue(),
+                color.getOpacity()
+        ));
+    }
+
+    public void supprimerCouleur(Color color){
+        MyColor myColor = new MyColor(
+                color.getRed(),
+                color.getGreen(),
+                color.getBlue(),
+                color.getOpacity()
+        );
+        ((Habit) model).supprimerCouleur(myColor);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(Habit.PROP_NOM)) {

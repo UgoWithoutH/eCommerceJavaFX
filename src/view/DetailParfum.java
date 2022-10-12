@@ -21,8 +21,7 @@ public class DetailParfum extends VBox {
     private ParfumVM parfumVM;
     private ManagerVM managerVM;
 
-    public DetailParfum(ParfumVM parfumVM, ManagerVM managerVM) throws IOException {
-        this.parfumVM = parfumVM;
+    public DetailParfum(ManagerVM managerVM) throws IOException {
         this.managerVM = managerVM;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/DetailParfum.fxml"));
         loader.setController(this);
@@ -31,8 +30,7 @@ public class DetailParfum extends VBox {
     }
 
     public void initialize(){
-        fragrances.itemsProperty().bind(parfumVM.fragrancesProperty());
-        choiceFragrance.itemsProperty().bind(managerVM.choicesFragrancesProperty());
+
     }
 
     @FXML
@@ -49,5 +47,11 @@ public class DetailParfum extends VBox {
         if(fragrance != null){
             parfumVM.supprimerFragrance(fragrance);
         }
+    }
+
+    public void setParfumVM(ParfumVM parfumVM) {
+        this.parfumVM = parfumVM;
+        fragrances.itemsProperty().bind(parfumVM.fragrancesProperty());
+        choiceFragrance.itemsProperty().bind(managerVM.choicesFragrancesProperty());
     }
 }

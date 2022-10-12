@@ -50,7 +50,7 @@ public class Habit extends Article {
         if(!couleurs.contains(couleur)){
             couleurs.add(couleur);
             int index = couleurs.indexOf(couleur);
-            support.fireIndexedPropertyChange(PROP_COULEUR_AJOUT, index, couleurs.size() > 1 ? couleurs.get(index-1) : null, couleurs);
+            support.fireIndexedPropertyChange(PROP_COULEUR_AJOUT, index, couleurs.size() > 1 ? couleurs.get(index-1) : null, couleur);
         }
     }
 
